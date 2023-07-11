@@ -1,0 +1,11 @@
+{
+    "movies": "Películas",
+    "series": "Series",
+    "search": "Buscar",
+    "language": "Idioma",
+    "trending_movies": "Películas en tendencia",
+    "trending_series": "Series en tendencia",
+    "empty_option": "¡La opción no es válida! Por favor, corríjala y vuelva a intentarlo.",
+    "empty_language": "¡El lenguaje está vacío! Por favor, corríjalo y vuelva a intentarlo.",
+    "invalid_language": "¡El lenguaje no es válido! Por favor, corríjalo y vuelva a intentarlo."
+}

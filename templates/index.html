@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlicksFlex</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/vendor/fontawesome-free-6.4.0-web/css/all.css">
+</head>
+<body class="theme theme-midnight">
+    <div class="d-none" id="preloader">
+        <div class="preloader first-preloader">
+            <div class="preloader__inner">
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="content">
+            <div class="logo">
+                <a class="img" href="/home"></a> 
+            </div>    
+            <div class="menu">
+                <ul>
+                    <li><a href="/movies"><i class="fa-solid fa-film mr-5"></i> {{translations.get('movies', 'Movies')}}</a></li>
+                    <li><a href="/series"><i class="fa-solid fa-clapperboard mr-5"></i> {{translations.get('series', 'Series')}}</a></li>
+                    <li><a href="#"><i class="fa-solid fa-search mr-5"></i> {{translations.get('search', 'Search')}}</a></li>
+                    <li class="w-100 d-block">
+                        <a href="javascript:;" dropdown="#dropdown-languages">
+                            <i class="fa-solid fa-globe mr-5"></i> {{translations.get('language', 'Language')}}
+                        </a>
+                        <div class="dropdown mt-5 mr-10" id="dropdown-languages">
+                            <div class="dropdown-menu">
+                                {% for language in languages %}
+                                <a href="javascript:;" onclick="index_changelanguage('{{language.id}}');">{{language.name}} <img class="navbar-flag" src="/static/img/country/{{language.id}}.svg" alt="{{language.name}}"></a>
+                                {% endfor%}
+                            </div>
+                        </div>    
+                    </li>                                    
+                </ul>
+            </div> 
+            <div class="user"> 
+                <div class="user-div" dropdown="#dropdown-user">
+                    <span>Jesus Navarro</span>
+                    <div class="img"></div>
+                </div>  
+                <div class="dropdown mr-10" id="dropdown-user" style="right: 0;">
+                    <div class="dropdown-menu">
+                        <a href="/auth/logout"><i class="fa-solid fa-right-from-bracket mr-5"></i> Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>           
+        </div>
+    </nav>
+    <nav class="navbar mobile">
+        <div class="content">              
+            <div class="menu">
+                <ul>
+                    <li><i class="fa-solid fa-film mr-5"></i> Películas</li>
+                    <li><i class="fa-solid fa-clapperboard mr-5"></i> Series</li>
+                    <li><i class="fa-solid fa-search mr-5"></i> Buscar</li>
+                </ul>
+            </div>  
+        </div>
+    </nav>
+    <div class="app container" id="appcontainer">
+        <div class="preloader first-preloader">
+            <div class="preloader__inner">
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+        <div class="preloader">
+            <div class="preloader__inner">
+            <div class="preloader__header"></div>
+            <div class="preloader__content">
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+                <div class="preloader__item"></div>
+            </div>
+            </div>
+        </div>
+    </div>    
+    <script src="/static/js/jquery-3.7.0.min.js"></script>
+    <script src="/static/js/jquery-ui.min.js"></script>
+    <script src="/static/js/api.js?v=1.0"></script>
+    <script src="/static/js/scripts.js?v=1.0"></script>
+    <script>
+        function index_changelanguage(language){
+            var formData = new FormData();
+            formData.append("language", language);
+
+            var response = api_sendData(url = `data/change/language`, type = 'POST', formData = formData);
+            response.then(function (response) {
+                if(response.success){
+                    location.reload();
+                    return;
+                }
+            }).catch(function (response) {
+                         
+            });
+        }
+    </script>
+</body>
+</html>
