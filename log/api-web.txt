@@ -1,7 +1,0 @@
-[C25] eval() arg 1 must be a string, bytes or code object
-[C25] eval() arg 1 must be a string, bytes or code object
-[C32] 'api_formaturl' is undefined
-[C33] 'NoneType' object is not subscriptable
-[C33] 'NoneType' object is not subscriptable
-[C48] 'NoneType' object is not subscriptable
-[C48] 'NoneType' object is not subscriptable
