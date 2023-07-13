@@ -30,7 +30,7 @@ def api_web(path):
                     if db_movie:
                         if v_language != 'en-us':
                             movie_translation = db_movie_translations().get(option = 'one', by = 'movie_id,language_id', movie_id = db_movie['id'], language_id = v_language)
-                            if not movie_translation:                                  
+                            if movie_translation:                                  
                                 db_movie['title'] = movie_translation['title']
                                 db_movie['overview'] = movie_translation['overview']
                         
@@ -54,9 +54,10 @@ def api_web(path):
                     
                     session['language'] = language
                     return json.dumps({'success': True}) 
-
-    except Exception as e:
-        api_savefile('log/api-web.txt', f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
+                
+        return json.dumps({'success': False, 'code': f'H404', 'msg': 'Page not found.'}), 404
+    except Exception as e:        
+        api_savefile(os.path.join(app.root_path, 'log', 'api-web.txt'), f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
         return json.dumps({'success': False, 'code': f'H500C{sys.exc_info()[-1].tb_lineno}', 'msg': 'An error occurred! The error was reported correctly and we will be working to fix it.'}), 500
 
 @app.route('/api/web/token/csrf', methods = ['GET'])

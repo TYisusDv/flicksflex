@@ -9,7 +9,7 @@ def web_main(path):
         languages = db_languages().get('all')
         return render_template('index.html', languages = languages)
     except Exception as e:
-        api_savefile('log/web.txt', f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
+        api_savefile(os.path.join(app.root_path, 'log', 'web.txt'), f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
         return json.dumps({'success': False, 'code': f'H500C{sys.exc_info()[-1].tb_lineno}', 'msg': 'An error occurred! The error was reported correctly and we will be working to fix it.'}), 500
 
 @app.before_request
@@ -32,7 +32,7 @@ def task_onemin():
             web_task_trending()
             web_task_translations()
         except Exception as e:
-            api_savefile('log/task-onemin.txt', f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
+            api_savefile(os.path.join(app.root_path, 'log', 'task-onemin.txt'), f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
 
 def web_task_trending():   
     v_datetime_now = datetime.now()
@@ -53,19 +53,19 @@ def web_task_trending():
                 tmdb_movie = api_gettmdb(url = f'/movie/{tmdb_id}?language=en-US').json()
                 uniqueid = api_uniqueid()
 
-                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["poster_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'poster', 'en-us', f'{tmdb_id}.webp'), 85, 800)
-                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', 'en-us', f'{tmdb_id}.webp'), 85, 1080)
-
                 db_movies().insert(movie_id = uniqueid, title = tmdb_movie['title'], overview = tmdb_movie['overview'], runtime = tmdb_movie['runtime'], release_date = tmdb_movie['release_date'], tmdb_id = tmdb_id)
-
+                
                 for genre in tmdb_movie['genres']:
                     db_genres().insert(genre_id = genre['id'], name = genre['name'])
-                    db_movies_genres().insert(movie_id = uniqueid, genre_id = genre['id'])                        
+                    db_movies_genres().insert(movie_id = uniqueid, genre_id = genre['id'])    
+
+                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["poster_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'poster', 'en-us', f'{tmdb_id}.webp'), 85, 800)
+                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', 'en-us', f'{tmdb_id}.webp'), 85, 1080)                    
 
         db_information().update(information_id = 'trending_movies', data = str(tmdb_ids), regdate = v_date_now)
 
 def web_task_translations(): 
-    language_id_list = ['es_mx']
+    language_id_list = ['es-mx']
 
     v_db_movies = db_movies().get(option = 'all')
     for db_movie in v_db_movies:

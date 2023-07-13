@@ -14,7 +14,7 @@ $(document).ready(function() {
     scripts_hiddendropdowns();    
 
     /* NAVBAR */
-    $(".navbar.mobile .content .menu").html($(".navbar .content .menu").html());
+    $(".menu.mobile").html($(".navbar .content .menu").html());
 
     $(document).on("click", "[dropdown]", function(event) {
         event.stopPropagation();
@@ -115,43 +115,22 @@ function scripts_isMobile() {
 function scripts_scrollwindow() {
     var newScrollTop = $(window).scrollTop();
     var navbar = $(".navbar");
-    var navbarSecond = $(".navbar.mobile");
+    var menumobile = $(".menu.mobile");
 
-    if (scripts_isMobile()) {
-        if (newScrollTop > scrollTop) {
-            navbar.css("background", "var(--navbar)");
-            navbarSecond.css("background", "var(--navbar)");
-            setTimeout(function() {
-                navbarSecond.css("margin-top", "-70px");
-            }, 500);
-        } else {
-            navbar.css("background", "var(--navbar)");
-            navbarSecond.css("background", "var(--navbar)");
-            setTimeout(function() {
-                navbarSecond.css("margin-top", "70px");
-            }, 100);
+    if(scripts_isMobile()){
+        if (newScrollTop > scrollTop) {      
+            menumobile.fadeOut(200);
+        } else {        
+            menumobile.fadeIn(200);        
         }
+    }
 
-        if (scrollTop > 70) {
-            navbar.css("background", "var(--navbar)");
-            navbar.find(".content .user").removeClass("transparent");
-            navbar.find(".content .menu").removeClass("transparent");
-        } else {
-            navbar.find(".content .user").addClass("transparent");
-            navbar.find(".content .menu").addClass("transparent");
-            navbar.css("background", "linear-gradient(to bottom, var(--navbar), var(--navbar-gradient-2))");
-            navbarSecond.css("background", "linear-gradient(to bottom, var(--navbar-gradient-2), var(--navbar-gradient-1))");
-        }
-    } else {
-        if (scrollTop > 70) {
-            navbar.css("background", "var(--navbar)");
-            navbar.find(".content .user").removeClass("transparent");
-            navbar.find(".content .menu").removeClass("transparent");
-        } else {
-            navbar.find(".content .user").addClass("transparent");
-            navbar.find(".content .menu").addClass("transparent");
-            navbar.css("background", "linear-gradient(to bottom, var(--navbar), var(--navbar-gradient-1))");
-        }
+    if (scrollTop > 70) {            
+        navbar.find(".content").addClass("active");
+        menumobile.addClass("active")
+    } else {            
+        navbar.find(".content").removeClass("active");
+        menumobile.removeClass("active")        
     }
 
     scrollTop = newScrollTop;
