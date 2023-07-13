@@ -53,7 +53,7 @@ def web_task_trending():
             _db_movies = db_movies.get(option = 'one', by = 'tmdb_id', tmdb_id = tmdb_id)
             if not _db_movies:
                 tmdb_movie = api_gettmdb(url = f'/movie/{tmdb_id}?language=en-US').json()
-                uniqueid = api_uniqueid()
+                uniqueid = int(api_uniqueid())
                 
                 genres_ids = []
                 for genre in tmdb_movie['genres']:
@@ -86,7 +86,7 @@ def web_task_translations():
                 api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["poster_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'poster', language_id, f'{tmdb_id}.webp'), 85, 800)
                 api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', language_id, f'{tmdb_id}.webp'), 85, 1080)
 
-scheduler.add_job(task_onemin, 'interval', seconds=10) #seconds=10 #minutes=1
+scheduler.add_job(task_onemin, 'interval', minutes=1) #seconds=10 #minutes=1
 scheduler.start()
 
 if __name__ == '__main__':
