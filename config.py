@@ -8,12 +8,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from unidecode import unidecode
 from PIL import Image
 from io import BytesIO
-import json, uuid, requests, re, math, time, sys, random, shutil, os, base64, subprocess, psutil, glob, arrow, socket, string, html
+import json, uuid, requests, re, math, time, sys, random, shutil, os, base64, subprocess, psutil, glob, socket, string, html
 
 app_local = False
 app_hostname = socket.gethostname()
 
-if app_hostname == "fedora":
+if app_hostname == "jesus-linux":
     app_local = True
 
 if app_local:

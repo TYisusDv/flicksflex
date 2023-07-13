@@ -32,7 +32,6 @@ class db_information:
                 data = cur.fetchone()
                 cur.close()
                 return data
-            
             return None
         elif option == 'all':
             cur = mysql.connection.cursor()
@@ -40,8 +39,6 @@ class db_information:
             data = cur.fetchall()
             cur.close()
             return data
-        
-            return None
         else:
             return None
     
@@ -62,7 +59,6 @@ class db_genres:
         cur.execute('INSERT IGNORE INTO genres(id, name) VALUES(%s, %s)', (genre_id, name,))
         mysql.connection.commit()
         cur.close()     
-
         return True
 
 class db_movies:
@@ -83,15 +79,13 @@ class db_movies:
                 data = cur.fetchone()
                 cur.close()
                 return data
-
             return None
         elif option == 'all':
             cur = mysql.connection.cursor()
-            cur.execute('SELECT * FROM languages')
+            cur.execute('SELECT * FROM movies')
             data = cur.fetchall()
             cur.close()
             return data
-            return None
         else:
             return None 
         
@@ -99,8 +93,7 @@ class db_movies:
         cur = mysql.connection.cursor()        
         cur.execute('INSERT IGNORE INTO movies(id, title, overview, runtime, release_date, tmdb_id) VALUES(%s, %s, %s, %s, %s, %s)', (movie_id, title, overview, runtime, release_date, tmdb_id,))
         mysql.connection.commit()
-        cur.close()     
-
+        cur.close()  
         return True
 
 class db_movie_translations:
@@ -115,24 +108,15 @@ class db_movie_translations:
                 data = cur.fetchone()
                 cur.close()
                 return data
-
             return None
         else:
             return None 
         
-    def insert(self, tmdb_id = None, movie_id = None, language_id = None):
-        movie = api_gettmdb(url = f'/movie/{tmdb_id}?language={language_id}').json()
-        title = movie['title']
-        overview = movie['overview']
-        
+    def insert(self, title = None, overview = None, movie_id = None, language_id = None):
         cur = mysql.connection.cursor()        
         cur.execute('INSERT IGNORE INTO movie_translations(title, overview, movie_id, language_id) VALUES(%s, %s, %s, %s)', (title, overview, movie_id, language_id,))
         mysql.connection.commit()
-        cur.close()     
-
-        api_saveimg(f'https://image.tmdb.org/t/p/original{movie["poster_path"]}', f'static/img/movie/poster/{language_id}/{tmdb_id}.webp', 85, 800)
-        api_saveimg(f'https://image.tmdb.org/t/p/original{movie["backdrop_path"]}', f'static/img/movie/backdrop/{language_id}/{tmdb_id}.webp', 85, 1080)
-
+        cur.close()
         return True
     
 class db_movies_genres:
@@ -143,6 +127,5 @@ class db_movies_genres:
         cur = mysql.connection.cursor()        
         cur.execute('INSERT IGNORE INTO movies_genres(movie_id, genre_id) VALUES(%s, %s)', (movie_id, genre_id,))
         mysql.connection.commit()
-        cur.close()     
-
+        cur.close() 
         return True

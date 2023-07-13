@@ -16,32 +16,26 @@ def api_web(path):
         v_date_now = v_datetime_now.date()
 
         v_language = v_getlanguage['language']
-        translations = v_getlanguage['translations']
+        v_translations = v_getlanguage['translations']
 
         if v_apiurlsplit[0] == 'widget':
             if v_apiurlsplit[1] == 'home' and not v_apiurlsplit[2]:
-                db_trending_movies = db_information().get(option = 'one', by = 'id', information_id = 'trending_movies')
-                db_trending_movies_data = db_trending_movies['data']
+                v_db_information_trending_movies = db_information().get(option = 'one', by = 'id', information_id = 'trending_movies')
+                trending_movies_data = v_db_information_trending_movies['data']
 
                 #TRENDING MOVIES
                 trending_movies = []                
-                for movie_id in eval(db_trending_movies_data):
-                    movie = db_movies().get(option = 'one', by = 'tmdb_id', tmdb_id = movie_id)
-                    if movie:
+                for movie_id in eval(trending_movies_data):
+                    db_movie = db_movies().get(option = 'one', by = 'tmdb_id', tmdb_id = movie_id)
+                    if db_movie:
                         if v_language != 'en-us':
-                            movie_translation = None
-                            while True:
-                                movie_translation = db_movie_translations().get(option = 'one', by = 'movie_id,language_id', movie_id = movie['id'], language_id = v_language)
-                                if not movie_translation:
-                                    db_movie_translations().insert(tmdb_id = movie_id, movie_id = movie['id'], language_id = v_language)
-                                else:                                    
-                                    break
-                                  
-                            movie['title'] = movie_translation['title']
-                            movie['overview'] = movie_translation['overview']
+                            movie_translation = db_movie_translations().get(option = 'one', by = 'movie_id,language_id', movie_id = db_movie['id'], language_id = v_language)
+                            if not movie_translation:                                  
+                                db_movie['title'] = movie_translation['title']
+                                db_movie['overview'] = movie_translation['overview']
                         
-                        movie['url'] = f'{movie["id"]}-{api_formaturl(movie["title"])}' 
-                        trending_movies.append(movie)
+                        db_movie['url'] = f'{db_movie["id"]}-{api_formaturl(db_movie["title"])}' 
+                        trending_movies.append(db_movie)
                 #TRENDING MOVIES END
 
                 banner_trending_movies = trending_movies.copy() 
@@ -54,9 +48,9 @@ def api_web(path):
                 if v_apiurlsplit[2] == 'language' and not v_apiurlsplit[3]:
                     language = v_requestform.get('language')
                     if not language:
-                        return json.dumps({'success': False, 'msg': translations.get('empty_language', 'Language is empty! Please correct it and try again.')}) 
+                        return json.dumps({'success': False, 'msg': v_translations.get('empty_language', 'Language is empty! Please correct it and try again.')}) 
                     elif not language in ['en-us', 'es-mx']:
-                        return json.dumps({'success': False, 'msg': translations.get('invalid_language', 'Language is invalid! Please correct it and try again.')}) 
+                        return json.dumps({'success': False, 'msg': v_translations.get('invalid_language', 'Language is invalid! Please correct it and try again.')}) 
                     
                     session['language'] = language
                     return json.dumps({'success': True}) 
