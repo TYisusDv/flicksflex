@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, escape, make_response, send_file
-from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect, generate_csrf
+from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 from datetime import datetime, timedelta
 from passlib.hash import bcrypt
 from itsdangerous import URLSafeSerializer
@@ -16,15 +17,11 @@ app_hostname = socket.gethostname()
 if app_hostname == "jesus-linux":
     app_local = True
 
-if app_local:
-    app_db_user = 'root'
-    app_db_password = '123456789'
+if app_local:   
     app_db_db = 'flicksflex'
     app_link = 'http://127.0.0.1:5000'
     app_debug = True
-else:
-    app_db_user = 'enigmatm'
-    app_db_password = 'eNigMAtm01TM@19#ByJNigHt&21'
+else:    
     app_db_db = 'enigmatm'
     app_link = 'https://enigmatm.pro'
     app_debug = False
@@ -32,16 +29,14 @@ else:
 csrf = CSRFProtect()
 app = Flask(__name__)
 csrf.init_app(app)
-
 app.secret_key = "SeCrEt_G0cE3r8277"
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = app_db_user
-app.config["MYSQL_PASSWORD"] = app_db_password
-app.config["MYSQL_DB"] = app_db_db
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'  # URL de Redis
 app.config['result_backend'] = 'redis://localhost:6379/0'  # URL de Redis
-mysql = MySQL(app)
+db_mongoClient = MongoClient('mongodb://localhost:27017/')
+db_mongo = db_mongoClient[app_db_db]
+
 
 def api_verify_session():
     #0 = Not Logged

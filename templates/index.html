@@ -95,7 +95,7 @@
                         <div class="dropdown mt-5 mr-10" id="dropdown-languages">
                             <div class="dropdown-menu">
                                 {% for language in languages %}
-                                <a href="javascript:;" onclick="index_changelanguage('{{language.id}}');">{{language.name}} <img class="navbar-flag" src="/static/img/country/{{language.id}}.svg" alt="{{language.name}}"></a>
+                                <a href="javascript:;" onclick="index_changelanguage('{{language._id}}');">{{language.name}} <img class="navbar-flag" src="/static/img/country/{{language._id}}.svg" alt="{{language.name}}"></a>
                                 {% endfor%}
                             </div>
                         </div>    
