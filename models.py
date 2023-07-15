@@ -39,6 +39,18 @@ class db_information:
 
 class db_genres:
     @staticmethod
+    def get(option = None, by = None, genre_id = None):
+        if option == 'one':
+            if by == 'genre_id':
+                data = db_mongo.genres.find_one({"_id": genre_id})
+                return data
+            
+            return None
+        elif option == 'all':            
+            return None
+        else:
+            return None
+    @staticmethod
     def insert(genre_id = None, name = None):
         document = {
             "_id": genre_id,
@@ -54,13 +66,31 @@ class db_genres:
 
 class db_movies:
     @staticmethod    
-    def get(option = None, by = None, movie_id = None, title = None, overview = None, tmdb_id = None):
+    def get(option = None, by = None, movie_id = None, title = None, overview = None, tmdb_id = None, language_id = 'en-us'):
         if option == 'one':
             if by == 'id':
                 data = db_mongo.movies.find_one({"_id": movie_id})
                 return data
             elif by == 'tmdb_id':
                 data = db_mongo.movies.find_one({"tmdb_id": tmdb_id})
+                return data
+            elif by == 'tmdb_id,language_id':
+                data = db_mongo.movies.find_one({"tmdb_id": tmdb_id})
+                if language_id != 'en-us': 
+                    _db_movie_translations = db_movie_translations.get(option = 'one', by = 'movie_id,language_id', movie_id = data['_id'], language_id = language_id)
+                    if _db_movie_translations:
+                        data['title'] = _db_movie_translations['title']
+                        data['overview'] = _db_movie_translations['overview']
+
+                return data
+            elif by == 'movie_id,language_id':
+                data = db_mongo.movies.find_one({"_id": movie_id})
+                if language_id != 'en-us': 
+                    _db_movie_translations = db_movie_translations.get(option = 'one', by = 'movie_id,language_id', movie_id = movie_id, language_id = language_id)
+                    if _db_movie_translations:
+                        data['title'] = _db_movie_translations['title']
+                        data['overview'] = _db_movie_translations['overview']
+
                 return data
             return None
         elif option == 'all':
@@ -94,19 +124,27 @@ class db_movie_translations:
     def get(option = None, by = None, movie_id = None, language_id = None):
         if option == 'one':
             if by == 'movie_id,language_id':
-                cur = mysql.connection.cursor()
-                cur.execute('SELECT * FROM movie_translations WHERE movie_id = %s AND language_id = %s', (movie_id, language_id,))
-                data = cur.fetchone()
-                cur.close()
+                data = db_mongo.movie_translations.find_one({"_id": {"movie_id": movie_id, "language_id": language_id}})
                 return data
             return None
         else:
             return None 
     
     @staticmethod 
-    def insert(title = None, overview = None, movie_id = None, language_id = None):
-        cur = mysql.connection.cursor()        
-        cur.execute('INSERT IGNORE INTO movie_translations(title, overview, movie_id, language_id) VALUES(%s, %s, %s, %s)', (title, overview, movie_id, language_id,))
-        mysql.connection.commit()
-        cur.close()
-        return True
+    def insert(movie_id = None, language_id = None, title = None, overview = None):
+        document = {
+            "_id": {
+                "movie_id": movie_id, 
+                "language_id": language_id,
+            },
+            "title": title,
+            "overview": overview
+        }
+
+        try: 
+            data = db_mongo.movie_translations.insert_one(document, bypass_document_validation=True)
+            return data
+        except DuplicateKeyError:
+            pass
+        
+        return None

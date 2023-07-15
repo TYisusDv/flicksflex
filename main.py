@@ -32,7 +32,7 @@ def task_onemin():
     with app.app_context(): 
         try:
             web_task_trending()
-            #web_task_translations()
+            web_task_translations()
         except Exception as e:
             api_savefile(os.path.join(app.root_path, 'log', 'task-onemin.txt'), f'[C{sys.exc_info()[-1].tb_lineno}] {e}')
 
@@ -63,31 +63,30 @@ def web_task_trending():
                 db_movies.insert(movie_id = uniqueid, title = tmdb_movie['title'], overview = tmdb_movie['overview'], runtime = tmdb_movie['runtime'], release_date = tmdb_movie['release_date'], tmdb_id = tmdb_id, genres = genres_ids)                
 
                 api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["poster_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'poster', 'en-us', f'{tmdb_id}.webp'), 85, 800)
-                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', 'en-us', f'{tmdb_id}.webp'), 85, 1080)                    
+                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', f'{tmdb_id}.webp'), 85, 1080)                    
 
         db_information.update(information_id = 'trending_movies', data = tmdb_ids, regdate = str(date_now))
 
 def web_task_translations(): 
     language_id_list = ['es-mx']
 
-    v_db_movies = db_movies().get(option = 'all')
-    for db_movie in v_db_movies:
+    _db_movies = db_movies.get(option = 'all')
+    for _db_movie in _db_movies:
         for language_id in language_id_list:
-            db_movie_id = db_movie['id']
+            _db_movie_id = _db_movie['_id']
 
-            v_db_movie_translations = db_movie_translations().get(option = 'one', by = 'movie_id,language_id', movie_id = db_movie_id, language_id = language_id)
-            if not v_db_movie_translations:
-                tmdb_id = db_movie['tmdb_id']
+            _db_movie_translations = db_movie_translations.get(option = 'one', by = 'movie_id,language_id', movie_id = _db_movie_id, language_id = language_id)
+            if not _db_movie_translations:
+                tmdb_id = _db_movie['tmdb_id']
                 tmdb_movie = api_gettmdb(url = f'/movie/{tmdb_id}?language={language_id}').json()
                 title = tmdb_movie['title']
                 overview = tmdb_movie['overview']
 
-                db_movie_translations().insert(title = title, overview = overview, movie_id = db_movie_id, language_id = language_id)    
+                db_movie_translations.insert(movie_id = _db_movie_id, language_id = language_id, title = title, overview = overview)    
                 api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["poster_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'poster', language_id, f'{tmdb_id}.webp'), 85, 800)
-                api_saveimg(f'https://image.tmdb.org/t/p/original{tmdb_movie["backdrop_path"]}', os.path.join(app.root_path, 'static', 'img', 'movie', 'backdrop', language_id, f'{tmdb_id}.webp'), 85, 1080)
 
 scheduler.add_job(task_onemin, 'interval', minutes=1) #seconds=10 #minutes=1
 scheduler.start()
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug = app_debug)
+    app.run(host='0.0.0.0', debug = app_debug)

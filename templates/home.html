@@ -8,48 +8,43 @@
                   <h3>{{ movie.title }}</h3>
                   <p>{{ movie.overview }}</p>
               </div>
-              <div class="img img__preloader loading" data-src="static/img/movie/backdrop/{{session['language']}}/{{movie.tmdb_id}}.webp"></div>
+              <div class="img img__preloader loading" data-src="/static/img/movie/backdrop/{{movie.tmdb_id}}.webp"></div>
             </div>        
             {% endfor %}  
           </div>
         </div>
         <input type="number" class="d-none" name="page" value="1">
         <div class="arrow left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="arrow right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="arrow right-arrow active"><i class="fa-solid fa-chevron-right"></i></div>
     </div>
 </section>
 <section class="section-1">
     <h1>{{translations.get('trending_movies', 'Trending movies')}}</h1>
     <div class="carousel">
-        <div class="container">
+        <div class="container draggable">
           <div class="content">
             {% for movie in trending_movies %}
-            <div class="data"><a href="/movie/{{movie.url}}"><div class="img img__preloader loading" data-src="static/img/movie/poster/{{session['language']}}/{{movie.tmdb_id}}.webp"></div></a></div>        
+            <div class="data"><a href="/movie/{{movie.url}}"><div class="img img__preloader loading" data-src="/static/img/movie/poster/{{session['language']}}/{{movie.tmdb_id}}.webp"></div></a></div>        
             {% endfor %}    
           </div>
         </div>
         <input type="number" class="d-none" name="page" value="1">
         <div class="arrow left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="arrow right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="arrow right-arrow active"><i class="fa-solid fa-chevron-right"></i></div>
     </div>
 </section>  
 <section class="section-1">
   <h1>{{translations.get('trending_series', 'Trending series')}}</h1>
   <div class="carousel">
-      <div class="container">
+      <div class="container draggable">
         <div class="content">
           {% for movie in trending_movies %}
-          <div class="data"><a href="/movie/{{movie.url}}"><div class="img img__preloader loading" data-src="static/img/movie/poster/{{session['language']}}/{{movie.tmdb_id}}.webp"></div></a></div>        
+          <div class="data"><a href="/movie/{{movie.url}}"><div class="img img__preloader loading" data-src="/static/img/movie/poster/{{session['language']}}/{{movie.tmdb_id}}.webp"></div></a></div>        
           {% endfor %}    
         </div>
       </div>
       <input type="number" class="d-none" name="page" value="1">
       <div class="arrow left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-      <div class="arrow right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+      <div class="arrow right-arrow active"><i class="fa-solid fa-chevron-right"></i></div>
   </div>
 </section>  
-<script>
-  $(document).ready(function() {
-      scripts_carouselarrows();    
-  });
-</script>

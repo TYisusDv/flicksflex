@@ -8,8 +8,7 @@ var startY;
 var scrollTop = $(window).scrollTop();
 
 $(document).ready(function() {
-    scripts_lazyLoadImages();
-    scripts_carouselarrows();
+    scripts_lazyLoadImages();    
     scripts_scrollwindow();        
     scripts_hiddendropdowns();    
 
@@ -44,30 +43,26 @@ $(document).ready(function() {
             var page_start = carouselPage - 1;
             $(this).siblings("input[name='page']").val(carouselPage);
             carousel.animate({ scrollLeft: page_start * carouselWidth }, "slow");
-            scripts_carouselarrows();
         }
     });
 
     $(document).on("click", ".carousel .right-arrow", function() {
-        var carousel = $(this).siblings(".container");
-        var carouselWidth = carousel.outerWidth();
-        var carouselPage = parseInt($(this).siblings("input[name='page']").val());
-        var itemWidth = carousel.find(".content .data").outerWidth();
-        var visibleItems = Math.floor(carouselWidth / itemWidth);
-        var totalPages = Math.ceil(carousel.find(".data").length / visibleItems);
+        scripts_carouselnext(this);
+    });           
 
-        if (carouselPage < totalPages) {
-            carouselPage++;
-            var page_start = carouselPage - 1;
-            $(this).siblings("input[name='page']").val(carouselPage);
-            carousel.animate({ scrollLeft: page_start * carouselWidth }, "slow");
-            scripts_carouselarrows();     
-        }
-    });
+    setInterval(function(){  
+        scripts_carouselarrows();
+    }, 100);
 
-    setInterval(function(){
+    setInterval(function(){  
         scripts_lazyLoadImages();
-    }, 1000);
+    }, 500);
+
+    setInterval(function(){ 
+        if (!document.hidden) {
+            $(".section-0 .carousel .right-arrow").click();
+        }
+    }, 5000);
     /* CAROUSEL END */
 });
 
@@ -75,25 +70,33 @@ $(document).ready(function() {
 function scripts_carouselarrows() {
     $(".carousel").each(function() {
         var carousel = $(this);
-        var carouselContainer = carousel.find(".container");
-        var carouselContainerWidth = carouselContainer.outerWidth();
         var carouselPage = parseInt(carousel.find("input[name='page']").val());
-        var itemWidth = carouselContainer.find(".content .data").outerWidth();
-        var visibleItems = Math.floor(carouselContainerWidth / itemWidth);
-        var totalPages = Math.ceil(carouselContainer.find(".data").length / visibleItems);
 
         if (carouselPage <= 1) {
             carousel.find(".left-arrow").removeClass("active");
         } else {
             carousel.find(".left-arrow").addClass("active");
         }
-
-        if (carouselPage >= totalPages) {
-            carousel.find(".right-arrow").removeClass("active");
-        } else {
-            carousel.find(".right-arrow").addClass("active");
-        }
     });
+}
+
+function scripts_carouselnext(e){
+    var carousel = $(e).siblings(".container");
+    var carouselWidth = carousel.outerWidth();
+    var carouselPage = parseInt($(e).siblings("input[name='page']").val());
+    var itemWidth = carousel.find(".content .data").outerWidth();
+    var visibleItems = Math.floor(carouselWidth / itemWidth);
+    var totalPages = Math.ceil(carousel.find(".data").length / visibleItems);
+
+    if (carouselPage < totalPages) {
+        carouselPage++;
+        var page_start = carouselPage - 1;
+        $(e).siblings("input[name='page']").val(carouselPage);
+        carousel.animate({ scrollLeft: page_start * carouselWidth }, "slow");
+    } else {
+        $(e).siblings("input[name='page']").val(1);
+        carousel.animate({ scrollLeft: 0 * carouselWidth }, "slow");
+    }
 }
 
 function scripts_hiddendropdowns(){
@@ -120,9 +123,17 @@ function scripts_scrollwindow() {
     if(scripts_isMobile()){
         if (newScrollTop > scrollTop) {      
             menumobile.fadeOut(200);
-        } else {        
-            menumobile.fadeIn(200);        
+            setTimeout(function(){
+                navbar.css("height", "70px")
+            }, 500);            
+        } else {  
+            navbar.css("height", "120px")   
+            setTimeout(function(){   
+                menumobile.fadeIn(200); 
+            }, 100);     
         }
+    } else {
+        navbar.css("height", "70px")
     }
 
     if (scrollTop > 70) {            

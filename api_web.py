@@ -10,31 +10,25 @@ def api_web(path):
         if request.method in ['GET', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']:
             return json.dumps({'success': False, 'code': 'H405', 'msg': 'Method not allowed.'}), 405
 
-        v_requestform = request.form
-        v_getlanguage = api_getlanguage()
-        v_datetime_now = datetime.now()
-        v_date_now = v_datetime_now.date()
+        _requestform = request.form
+        _getlanguage = api_getlanguage()
+        datetime_now = datetime.now()
+        date_now = datetime_now.date()
 
-        v_language = v_getlanguage['language']
-        v_translations = v_getlanguage['translations']
+        _language = _getlanguage['language']
+        _translations = _getlanguage['translations']
 
         if v_apiurlsplit[0] == 'widget':
             if v_apiurlsplit[1] == 'home' and not v_apiurlsplit[2]:
-                v_db_information_trending_movies = db_information().get(option = 'one', by = 'id', information_id = 'trending_movies')
+                v_db_information_trending_movies = db_information.get(option = 'one', by = 'id', information_id = 'trending_movies')
                 trending_movies_data = v_db_information_trending_movies['data']
 
                 #TRENDING MOVIES
                 trending_movies = []                
-                for movie_id in eval(trending_movies_data):
-                    db_movie = db_movies().get(option = 'one', by = 'tmdb_id', tmdb_id = movie_id)
+                for movie_id in trending_movies_data:
+                    db_movie = db_movies.get(option = 'one', by = 'tmdb_id,language_id', tmdb_id = movie_id , language_id = _language)
                     if db_movie:
-                        if v_language != 'en-us':
-                            movie_translation = db_movie_translations().get(option = 'one', by = 'movie_id,language_id', movie_id = db_movie['id'], language_id = v_language)
-                            if movie_translation:                                  
-                                db_movie['title'] = movie_translation['title']
-                                db_movie['overview'] = movie_translation['overview']
-                        
-                        db_movie['url'] = f'{db_movie["id"]}-{api_formaturl(db_movie["title"])}' 
+                        db_movie['url'] = f'{db_movie["_id"]}-{api_formaturl(db_movie["title"])}' 
                         trending_movies.append(db_movie)
                 #TRENDING MOVIES END
 
@@ -42,15 +36,32 @@ def api_web(path):
                 random.shuffle(banner_trending_movies)
                 
                 return json.dumps({'success': True, 'html': render_template('home.html', banner_trending_movies = banner_trending_movies[:5], trending_movies = trending_movies)})
-        
+            
+            elif v_apiurlsplit[1] == 'movie' and not v_apiurlsplit[3]:            
+                movie_id = v_apiurlsplit[2][0:8]
+                if movie_id.isnumeric():
+                    movie_id = int(movie_id)
+                    db_movie = db_movies.get(option = 'one', by = 'movie_id,language_id', movie_id = movie_id , language_id = _language)
+                    if db_movie:
+                        genres_ids = db_movie['genres']
+                        genres = []
+                        for genre_id in genres_ids:
+                            db_genre = db_genres.get(option = 'one', by = 'genre_id', genre_id = genre_id)
+                            genre = {
+                                "id": genre_id,
+                                "name": db_genre['name']
+                            }
+                            genres.append(genre)
+                        return json.dumps({'success': True, 'html': render_template('movie.html', db_movie = db_movie, genres = genres)})
+
         elif v_apiurlsplit[0] == 'data':
             if v_apiurlsplit[1] == 'change':
                 if v_apiurlsplit[2] == 'language' and not v_apiurlsplit[3]:
-                    language = v_requestform.get('language')
+                    language = _requestform.get('language')
                     if not language:
-                        return json.dumps({'success': False, 'msg': v_translations.get('empty_language', 'Language is empty! Please correct it and try again.')}) 
+                        return json.dumps({'success': False, 'msg': _translations.get('empty_language', 'Language is empty! Please correct it and try again.')}) 
                     elif not language in ['en-us', 'es-mx']:
-                        return json.dumps({'success': False, 'msg': v_translations.get('invalid_language', 'Language is invalid! Please correct it and try again.')}) 
+                        return json.dumps({'success': False, 'msg': _translations.get('invalid_language', 'Language is invalid! Please correct it and try again.')}) 
                     
                     session['language'] = language
                     return json.dumps({'success': True}) 

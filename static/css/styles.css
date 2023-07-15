@@ -118,19 +118,23 @@ body {
 }
 
 .mt-5 {
-    margin-top: 5px;
+    margin-top: 5px !important;
 }
 
 .mt-10 {
-    margin-top: 10px;
+    margin-top: 10px !important;
+}
+
+.mt-20 {
+    margin-top: 20px !important;
 }
 
 .mr-5 {
-    margin-right: 5px;
+    margin-right: 5px !important;
 }
 
 .mr-10 {
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .d-none {
@@ -139,6 +143,18 @@ body {
 
 .d-block {
     display: block !important;
+}
+
+.text-color-1 {
+    color: var(--text-color) !important;
+}
+
+.text-color-2 {
+    color: var(--text-color-2) !important;
+}
+
+.fw-bold {
+    font-weight: bold !important;
 }
 
 a {
@@ -207,7 +223,7 @@ a {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    z-index: 2;    
+    z-index: 3;    
     overflow: hidden;
 }
 
@@ -218,6 +234,8 @@ a {
     height: 50px;
     background: linear-gradient(to bottom, var(--navbar-gradient-2), var(--navbar-gradient-1));
     transition: background 0.3s;
+    padding: 0 5% 0 5%;    
+    box-sizing: border-box;
 }
 
 .navbar .menu.mobile.active {    
@@ -231,6 +249,11 @@ a {
     padding: 0;
     list-style-type: none;
     gap: 5px;
+    overflow: auto;
+}
+
+.navbar .menu.mobile ul::-webkit-scrollbar {
+    display: none;
 }
 
 .navbar .menu.mobile li a {
@@ -277,18 +300,18 @@ a {
 .navbar .content .logo {
     display: flex;
     height: 100%;
-    min-width: 100px;
+    min-width: 110px;
     align-items: center;
 }
 
 .navbar .content .logo .img {
-    background-image: url("/static/img/logo.jpg");
+    background-image: url("/static/img/flicksflex/flicksflex-c1.png");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     text-decoration: none;
-    width: 45px;
-    height: 45px;
+    width: 100%;
+    height: 30px;
 }
 
 .navbar .content .menu {
@@ -402,11 +425,7 @@ a {
 /* CAROUSEL 0 */
 .section-0 {
     color: var(--text-color);
-    padding: 0 5% 0 5%;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    padding: 0 5% 0 5%;    
     margin-bottom: 25px;
 }
 
@@ -521,10 +540,6 @@ a {
 .section-1 {
     color: var(--text-color);
     padding: 0 5% 0 5%;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
     margin-top: 25px;
 }
 
@@ -542,7 +557,7 @@ a {
 }
 
 .section-1 .carousel .container {
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .section-1 .carousel .container .content {
@@ -620,8 +635,172 @@ a {
     display: flex;
 }
 
-/* CAROUSEL 1 END */
+.carousel .draggable {
+  cursor: grab;
+}
 
+.carousel .draggable:active {
+  cursor: grabbing;
+}
+
+.carousel .draggable::-webkit-scrollbar {
+  display: none;
+}
+
+/* CAROUSEL 1 END */
+/* MOVIE */
+.movie {
+    display: flex;
+    flex-direction: column;
+}
+ 
+.movie a {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+
+.movie a:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.movie .banner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.movie .banner .shadow {
+    position: absolute;
+    width: 100%;
+    padding-bottom: 35%;
+    background-image: linear-gradient(to top, var(--background), var(--navbar-gradient-2));
+}
+
+.movie .banner .img {
+    pointer-events: none;
+    border-radius: 10px;
+    width: 100%;
+    padding-bottom: 35%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none !important;
+}
+
+.movie .container {
+    position: relative;
+    margin-top: -35%;
+    z-index: 2;
+}
+
+.movie .container .content {
+    display: flex;
+    flex-direction: column;    
+    width: 100%;
+    height: 100%;
+    padding: 90px 10% 0 10%;
+    box-sizing: border-box;
+}
+
+.movie .container .content .s-1 {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+}
+
+.movie .container .content .s-1 .img {
+    border-radius: 10px;
+    width: 230px;
+    padding-bottom: 330px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none !important;
+}
+.movie .container .content .s-1 .data {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 200px);
+}
+
+.movie .container .content .s-1 .data h1 {
+    margin: 0;
+    color: var(--text-color-2);
+    font-size: 30px;
+}
+
+.movie .container .content .s-1 .data p {
+    margin: 0;
+    margin-top: 4px;
+    color: var(--text-color);
+    text-align: justify;
+    font-size: 18px;
+}
+
+/* MOVIE END*/
+/* FOOTER */
+.footer {
+    display: flex;
+    position: relative;    
+    bottom: 0;
+    left: 0;
+    height: 80px;
+    width: 100%;
+    background: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: hidden;   
+    width: 100%; 
+    box-sizing: border-box;
+    background: var(--navbar);
+    z-index: 2;
+}
+
+.footer .content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 3px solid var(--navbar-hover);  
+    padding: 0 5% 0 5%;  
+    
+}
+
+.footer .content .dev p {
+    color: var(--primary);
+    width: 100%;  
+    margin: 0;
+    font-weight: normal;
+    margin-bottom: 5px;    
+    margin-bottom: -8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.footer .content .dev img {
+    height: 26px;
+}
+
+.footer .content .copy {
+    width: 40%;
+}
+
+.footer .content .copy p {
+    color: var(--text-color-2);    
+    text-align: right;
+    font-size: 16px;    
+    font-weight: bold;
+}
+.footer .content .copy span {
+    color: var(--primary);   
+}
+/* FOOTER END*/
 
 @media (max-width: 1500px) {
     .preloader__item {
@@ -737,6 +916,19 @@ a {
     }
 
     /* CAROUSEL 1 END */
+    /* FOOTER */
+    .footer .content .dev p {        
+        font-size: 14px;
+    }     
+    
+    .footer .content .dev img {
+        height: 26px;  
+    }
+    
+    .footer .content .copy p {
+        font-size: 14px;    
+    }
+    /*FOOTER END*/
 }
 
 @media (max-width: 800px) {

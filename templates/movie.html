@@ -1,0 +1,24 @@
+<div class="movie">
+  <div class="banner">
+    <div class="shadow"></div>
+    <div class="img img__preloader loading" data-src="/static/img/movie/backdrop/{{db_movie.tmdb_id}}.webp"></div>
+  </div>  
+  <div class="container">
+    <div class="content">
+      <div class="s-1">
+        <div class="img img__preloader loading" data-src="/static/img/movie/poster/{{session['language']}}/{{db_movie.tmdb_id}}.webp"></div>
+        <div class="data">
+          <h1>{{db_movie.title}}</h1>
+          <p>{{db_movie.overview}}</p>
+          <p class="mt-20">
+            <span class="text-color-2 fw-bold">{{translations.get('genre', 'Genre')}}:</span>
+            {% for genre in genres[:-1] %}
+              <a href="/movies/{{genre.name.lower().replace(' ', '_')}}">{{translations.get(genre.name.lower().replace(' ', '_'), genre.name)}}</a>,
+            {% endfor %}
+            <a href="/movies/{{genres[-1].name.lower().replace(' ', '_')}}">{{translations.get(genres[-1].name.lower().replace(' ', '_'), genres[-1].name)}}</a>   
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  

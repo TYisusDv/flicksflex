@@ -1,4 +1,6 @@
-[C28] eval() arg 1 must be a string, bytes or code object
-[C28] eval() arg 1 must be a string, bytes or code object
-[C28] eval() arg 1 must be a string, bytes or code object
-[C28] eval() arg 1 must be a string, bytes or code object
+[C42] 'NoneType' object is not subscriptable
+[C55] 'enumerate' is undefined
+[C55] 'genre' is undefined
+[C55] 'genre' is undefined
+[C55] 'genre' is undefined
+[C55] 'list object' has no attribute 'name'
