@@ -56,6 +56,13 @@ $(document).ready(function() {
 
     setInterval(function(){  
         scripts_lazyLoadImages();
+        $('circle.circle').each(function () {
+            var percent = Number($(this).data('value'));
+            var r = parseFloat($(this).css('r'));
+            var dasharray = parseFloat($(this).css('stroke-dasharray'));
+            var offset = dasharray - ((Math.PI*2*r) * (percent/100));
+            $(this).delay(1000).animate({strokeDashoffset: offset}, 1000);
+        });
     }, 500);
 
     setInterval(function(){ 

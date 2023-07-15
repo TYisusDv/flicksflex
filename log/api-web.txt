@@ -4,3 +4,5 @@
 [C55] 'genre' is undefined
 [C55] 'genre' is undefined
 [C55] 'list object' has no attribute 'name'
+[C59] unconverted data remains: 23-05-03
+[C59] 'int' object is not callable

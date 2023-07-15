@@ -52,6 +52,12 @@ def api_web(path):
                                 "name": db_genre['name']
                             }
                             genres.append(genre)
+                        
+                        minutes = db_movie['runtime']
+                        runtime_formated = "{:d}h {:02d}m".format((minutes // 60), (minutes % 60 ))
+                        db_movie['runtime_formated'] = runtime_formated
+                        db_movie['release_date_year'] = str(datetime.strptime(db_movie['release_date'], '%Y-%m-%d').year)
+
                         return json.dumps({'success': True, 'html': render_template('movie.html', db_movie = db_movie, genres = genres)})
 
         elif v_apiurlsplit[0] == 'data':
