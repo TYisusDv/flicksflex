@@ -22,8 +22,8 @@ if app_local:
     app_link = 'http://127.0.0.1:5000'
     app_debug = True
 else:    
-    app_db_db = 'enigmatm'
-    app_link = 'https://enigmatm.pro'
+    app_db_db = 'flicksflex'
+    app_link = 'http://127.0.0.1:5000'
     app_debug = False
 
 csrf = CSRFProtect()
