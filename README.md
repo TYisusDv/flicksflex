@@ -4,3 +4,4 @@ Sitio web informativo de peliculas, muestra informacion detallada, autores, dond
 # Información
 - Python
 - Flask
+- MySQL
